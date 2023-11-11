@@ -4,6 +4,8 @@ const { save } = require("../database/UserQueries");
 async function register(req, res) {
   const { nome, email, senha } = req.body;
 
+  console.log(req.body);
+
   try {
     const encryptedPass = await hash(senha, 10);
 

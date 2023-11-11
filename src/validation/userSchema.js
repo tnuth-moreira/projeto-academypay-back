@@ -1,22 +1,25 @@
 const joi = require("joi");
 
 const userSchema = joi.object({
-  nome: joi.string().trim().required().messages({
+  nome: joi.string().trim().strict().required().messages({
     "any.required": "Todos os campos são obrigatorios",
     "string.empty": "Todos os campos são obrigatorios",
     "string.trim": "Insira um nome valido",
     "string.base": "Insira um nome valido",
   }),
 
-  email: joi.string().email().required().messages({
+  email: joi.string().email().trim().strict().required().messages({
     "any.required": "Todos os campos são obrigatorios",
     "string.empty": "Todos os campos são obrigatorios",
     "string.email": "Digite um email valido",
+    "string.trim": "Insira um email valido",
   }),
 
   senha: joi
     .string()
     .min(8)
+    .trim()
+    .strict()
     .required()
     .pattern(/[^a-zA-Z0-9\d\w]/)
     .messages({
@@ -26,6 +29,7 @@ const userSchema = joi.object({
       "string.base": "Insira uma senha valida",
       "string.pattern.base":
         "A senha deve conter numeros e caracteres especiais",
+      "string.trim": "Insira uma senha valida",
     }),
 });
 
