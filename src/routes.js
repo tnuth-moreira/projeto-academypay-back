@@ -1,5 +1,5 @@
 const express = require("express");
-const updateUser = require("./validations/atualizarUsuario");
+const updateUser = require("./validations/updateUser");
 const router = express();
 
 
