@@ -1,16 +1,17 @@
-const express = require('express')
-const { registerClient } = require('./controlers/register')
-const { consultClient } = require('./controlers/consult')
-const { deleteClient } = require('./controlers/delete')
-const schemaClient = require('./schemas/schemaClient')
-const validateRegisterClient = require('./intermediate/ValidateRegisterClient')
+const express = require("express");
+const { registerClient } = require("./controller/register");
+const { consultClient } = require("./controller/consult");
+const schemaClient = require("./validation/schemaClient");
+const validateRegisterClient = require("./middleware/validateRegisterClient");
 
-const routes = express()
+const routes = express();
 
-routes.post('/register', validateRegisterClient(schemaClient), registerClient)
+routes.post(
+  "/registerClient",
+  validateRegisterClient(schemaClient),
+  registerClient
+);
 
-routes.get('/consult', consultClient)
+routes.get("/consult", consultClient);
 
-routes.delete('/delete', deleteClient)
-
-module.exports = routes
+module.exports = routes;

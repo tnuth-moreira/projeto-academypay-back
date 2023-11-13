@@ -14,16 +14,10 @@ const schemaClient = joi.object({
     "string.empty": "O campo CPF é obrigatório",
     "string.trim": "Digite um cpf valido",
   }),
-  telefone: joi.string().required().messages({
+  telefone: joi.string().trim().strict().required().messages({
     "string.empty": "O campo Telefone é obrigatório",
-    "string.trim": "Digite phone valido",
+    "string.trim": "Digite telefone valido",
   }),
-  cep: "",
-  logradouro: "",
-  complemento: "",
-  bairro: "",
-  cidade: "",
-  estado: "",
 });
 
 module.exports = schemaClient;

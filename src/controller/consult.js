@@ -1,10 +1,10 @@
 const { searchForClient } = require("../database/ClientQuery");
 
 const consultClient = async (req, res) => {
-  const { id } = req.usuario;
+  // const { id } = req.usuario;
 
   try {
-    const clients = await searchForClient({ usuario_id: id });
+    const clients = await searchForClient({ usuario_id: 11 });
 
     return res.status(200).json(clients);
   } catch (error) {
