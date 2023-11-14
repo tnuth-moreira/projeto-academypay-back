@@ -1,19 +1,30 @@
 const { hash } = require("bcrypt");
-const { save } = require("../database/UserQueries");
+const { saveUser } = require("../database/UserQueries");
 
 async function register(req, res) {
   const { nome, email, senha } = req.body;
 
-  console.log(req.body);
-
   try {
     const encryptedPass = await hash(senha, 10);
 
-    await save({ nome, email, senha: encryptedPass });
+    const {
+      senha: _,
+      cpf,
+      telefone,
+      ...userData
+    } = await saveUser({
+      nome,
+      email,
+      senha: encryptedPass,
+    });
 
-    return res.status(201).json({ mensagem: "Usuario criado" });
+    return res.status(201).json({
+      mensagem: "Usuario criado",
+      usuario: {
+        ...userData,
+      },
+    });
   } catch (error) {
-    console.error(error.message);
     return res.status(500).json({ mensagem: error.message });
   }
 }
