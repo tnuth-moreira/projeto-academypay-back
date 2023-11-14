@@ -1,5 +1,5 @@
 const express = require("express");
-const updateUser = require("./validations/updateUser");
+const updateUser = require("./controllers/updateUser.js");
 const validateRequest = require("./middlewares/validateRequest");
 const loginSchema = require("./validations/loginSchema");
 const { login } = require("./controllers/authentication");
