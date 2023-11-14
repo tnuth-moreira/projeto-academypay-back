@@ -2,13 +2,15 @@ create table usuarios(
 	id serial primary key,
   nome text not null,
   email text not null unique,
-  senha text not null
+  senha text not null, 
+  cpf text, 
+  telefone int
 );
 
 create table clientes(
 	id serial primary key,
   nome text not null,
-  email text not null unique,
+  email text not null,
   cpf text not null,
   telefone int not null,
   cep text,
