@@ -1,7 +1,7 @@
 const express = require("express");
-const { register } = require("./controller/UserController.js");
-const validateUser = require("./middleware/validateUser.js");
-const userSchema = require("./validation/userSchema.js");
+const { register } = require("./controllers/UserController.js");
+const validateUser = require("./middlewares/validateUser.js");
+const userSchema = require("./validations/userSchema.js");
 
 const router = express();
 
