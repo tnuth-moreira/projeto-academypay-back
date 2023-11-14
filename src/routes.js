@@ -1,5 +1,23 @@
 const express = require("express");
 
+const { registerClient } = require("./controllers/register");
+const { consultClient } = require("./controllers/consult");
+const schemaClient = require("./validations/schemaClient");
+const validateRegisterClient = require("./middlewares/validateRegisterClient");
+
+const routes = express();
+
+routes.post(
+  "/registerClient",
+  validateRegisterClient(schemaClient),
+  registerClient
+);
+
+routes.get("/consult", consultClient);
+
+module.exports = routes;
+
+
 const updateUser = require("./validations/updateUser");
 const router = express();
 
@@ -25,3 +43,4 @@ router.post("/register", validateUser(userSchema), register);
 router.put("/usuarios/:id", updateUser);
 
 module.exports = router;
+
