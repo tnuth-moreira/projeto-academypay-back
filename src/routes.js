@@ -1,8 +1,8 @@
 const express = require("express");
-const { registerClient } = require("./controller/register");
-const { consultClient } = require("./controller/consult");
-const schemaClient = require("./validation/schemaClient");
-const validateRegisterClient = require("./middleware/validateRegisterClient");
+const { registerClient } = require("./controllers/register");
+const { consultClient } = require("./controllers/consult");
+const schemaClient = require("./validations/schemaClient");
+const validateRegisterClient = require("./middlewares/validateRegisterClient");
 
 const routes = express();
 
