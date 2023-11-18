@@ -10,12 +10,10 @@ const registerClient = async (req, res) => {
       return res.status(400).json({ mensagem: "O cliente não foi cadastrado" });
     }
 
-    return res
-      .status(201)
-      .json({
-        mensagem: "Cliente cadastrado com sucesso",
-        Cliente: { ...newClient },
-      });
+    return res.status(201).json({
+      mensagem: "Cliente cadastrado com sucesso",
+      Cliente: { ...newClient },
+    });
   } catch (error) {
     return res
       .status(500)
