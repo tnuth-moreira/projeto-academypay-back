@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
-const knex = require("../database/config");
 const jwt = require("jsonwebtoken");
+const { findUser } = require("../database/UserQueries");
 
 const hash = process.env.JWT_HASH;
 
@@ -8,27 +8,25 @@ async function login(req, res) {
   const { email, senha } = req.body;
 
   try {
-    const usuario = await knex("usuarios").where({ email }).first();
+    const user = await findUser({ email });
 
-    if (!usuario) {
+    if (!user) {
       return res.status(404).json({ mensagem: "Usuário não encontrado" });
     }
 
-    const correctPassword = await bcrypt.compare(senha, usuario.senha);
+    const correctPassword = await bcrypt.compare(senha, user.senha);
 
     if (!correctPassword) {
-      return res.status(400).json({ mensagem: "E-mail ou senha inválida" });
+      return res.status(401).json({ mensagem: "E-mail ou senha inválida" });
     }
 
-    const token = jwt.sign({ id: usuario.id }, hash, { expiresIn: "8h" });
+    const token = jwt.sign({ id: user.id }, hash, { expiresIn: "8h" });
 
-    const { senha: _, telefone, cpf, ...dadosUsuario } = usuario;
+    const { senha: _, telefone, cpf, ...userData } = user;
 
-    return res.status(200).json({ usuario: dadosUsuario, token });
+    return res.status(200).json({ user: userData, token });
   } catch (error) {
-    console.log(error.message);
-
-    return res.status(500).json({ mensagem: "Erro interno do servidor" });
+    return res.status(401).json({ mensagem: "Não autorizado" });
   }
 }
 

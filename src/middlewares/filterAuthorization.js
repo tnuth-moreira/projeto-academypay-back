@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const knex = require("../database/config");
 
-const hash = process.env.JTW_HASH;
+const hash = process.env.JWT_HASH;
 
 async function filterAuthorization(req, res, next) {
   const { authorization } = req.headers;
@@ -21,13 +21,13 @@ async function filterAuthorization(req, res, next) {
       return res.status(404).json({ mensagem: "Usuario não localizado" });
     }
 
-    const { senha, ...usuario } = existingUser;
+    const { senha, ...user } = existingUser;
 
-    req.usuario = usuario;
+    req.user = user;
 
     next();
   } catch (error) {
-    return res.status(500).json({ mensagem: "Erro interno do servidor" });
+    return res.status(401).json({ mensagem: "Não autorizado" });
   }
 }
 

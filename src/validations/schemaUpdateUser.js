@@ -1,6 +1,6 @@
 const joi = require("joi");
 
-const userSchema = joi.object({
+const schemaUpdateUser = joi.object({
   nome: joi.string().trim().strict().required().messages({
     "any.required": "Por favor preencha todos os campos",
     "string.empty": "O preenchimento do nome é obrigatório",
@@ -14,6 +14,12 @@ const userSchema = joi.object({
     "string.base": "Insira um e-mail válido",
     "string.trim": "O campo e-mail não pode conter espaços em branco",
   }),
+  cpf: joi.string().trim().strict().optional().messages({
+    "string.trim": "Digite um CPF válido",
+  }),
+  telefone: joi.string().trim().strict().optional().messages({
+    "string.trim": "Digite telefone válido",
+  }),
   senha: joi
     .string()
     .trim()
@@ -22,10 +28,8 @@ const userSchema = joi.object({
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/
     )
     .min(8)
-    .required()
+    .optional()
     .messages({
-      "any.required": "Por favor preencha todos os campos",
-      "string.empty": "O preenchimento da senha é obrigatório",
       "string.min": "A senha precisa conter, no mínimo, 8 caracteres",
       "string.base": "Insira uma senha válida",
       "string.pattern.base":
@@ -34,4 +38,4 @@ const userSchema = joi.object({
     }),
 });
 
-module.exports = userSchema;
+module.exports = schemaUpdateUser;
