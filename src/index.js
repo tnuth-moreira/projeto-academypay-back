@@ -10,6 +10,7 @@ app.use(
     origin: "http://localhost:5173",
     optionsSuccessStatus: 200,
     methods: ["GET", "PUT", "POST"],
+    credentials: true,
     maxAge: 86400,
   })
 );
