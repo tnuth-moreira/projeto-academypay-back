@@ -5,15 +5,7 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(
-  cors({
-    origin: true,
-    optionsSuccessStatus: 200,
-    methods: ["GET", "PUT", "POST"],
-    credentials: true,
-    maxAge: 86400,
-  })
-);
+app.use(cors());
 
 app.use(express.json());
 app.use(routes);
