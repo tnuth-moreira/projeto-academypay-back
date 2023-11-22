@@ -14,6 +14,7 @@ const updateUser = require("./controllers/updateUser.js");
 const filterAuthorization = require("./middlewares/filterAuthorization.js");
 const validateUpdateUser = require("./middlewares/validateUpdateUser.js");
 const schemaUpdateUser = require("./validations/schemaUpdateUser.js");
+const allCharges = require("./controllers/allCharges.js");
 
 const routes = express();
 
@@ -32,5 +33,7 @@ routes.post(
 routes.get("/consultClient", consultClient);
 
 routes.put("/updateUser", validateUpdateUser(schemaUpdateUser), updateUser);
+
+routes.get("/allCharges/:clientId", allCharges);
 
 module.exports = routes;
