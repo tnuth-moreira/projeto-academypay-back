@@ -11,7 +11,7 @@ async function searchForClient(column) {
 async function saveClient(client) {
   const newClient = await knex("clientes").insert(client).returning("*");
 
-  return newClient;
+  return newClient[0];
 }
 
 module.exports = { searchForClient, saveClient };

@@ -1,19 +1,41 @@
 const { saveClient } = require("../database/ClientQuery");
+const knex = require("../database/config");
 
 const registerClient = async (req, res) => {
-  const { telefone } = req.body;
-
+  const { id } = req.user;
+  const { email, cpf } = req.body;
   try {
+    const emailAlredyRegistered = await knex("clientes")
+      .where({ email })
+      .andWhere({ usuario_id: id })
+      .first();
+
+    if (emailAlredyRegistered) {
+      return res.status(400).json({ mensagem: "O e-mail já cadastrado" });
+    }
+
+    const cpfAlredyRegistered = await knex("clientes")
+      .where({ cpf })
+      .andWhere({ usuario_id: id })
+      .first();
+
+    if (cpfAlredyRegistered) {
+      return res.status(400).json({ mensagem: "O cpf já cadastrado" });
+    }
+
     const newClient = await saveClient({
       ...req.body,
-      telefone: telefone,
+      usuario_id: id,
     });
 
     if (!newClient) {
       return res.status(400).json({ mensagem: "O cliente não foi cadastrado" });
     }
 
-    return res.status(201).json({ mensagem: "Usuário cadastrado com sucesso" });
+    return res.status(201).json({
+      mensagem: "Cliente cadastrado com sucesso",
+      Cliente: { ...newClient },
+    });
   } catch (error) {
     return res
       .status(500)

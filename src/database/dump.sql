@@ -14,11 +14,11 @@ create table clientes(
   cpf text not null,
   telefone int not null,
   cep text,
-  logradouro text,
+  endereco text,
   complemento text,
   bairro text,
   cidade text,
-  estado text,
+  uf varchar(2),
  	usuario_id int,
   foreign key (usuario_id) references usuarios(id)
 );

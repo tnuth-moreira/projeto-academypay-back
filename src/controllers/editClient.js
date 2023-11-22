@@ -1,20 +1,20 @@
 const knex = require("../database/config");
 const { hash } = require("bcrypt");
-const { findUser } = require("../database/UserQueries");
+const { searchForClient } = require("../database/ClientQueries");
 
-const updateUser = async (req, res) => {
+const editClient = async (req, res) => {
   const { id } = req.user;
   const { nome, email, cpf, telefone, senha } = req.body;
 
   try {
-    const existingUser = await findUser({ id });
+    const existingClient = await searchForClient({ id });
 
-    if (!existingUser) {
-      return res.status(404).json({ erro: "Usuario não encontrado" });
+    if (!existingClient) {
+      return res.status(404).json({ erro: "Cliente não encontrado" });
     }
 
     if (cpf) {
-      const cpfExists = await knex("usuarios")
+      const cpfExists = await knex("clientes")
         .where("cpf", cpf)
         .whereNot("id", id)
         .first();
@@ -24,7 +24,7 @@ const updateUser = async (req, res) => {
       }
     }
 
-    const emailExists = await knex("usuarios")
+    const emailExists = await knex("clientes")
       .where("email", email)
       .whereNot("id", id)
       .first();
@@ -35,12 +35,12 @@ const updateUser = async (req, res) => {
     if (senha) {
       const encryptedPass = await hash(senha, 10);
 
-      await knex("usuarios").where({ id }).update({ senha: encryptedPass });
+      await knex("clientes").where({ id }).update({ senha: encryptedPass });
     }
 
     const { senha: _, ...userData } = req.body;
 
-    await knex("usuarios")
+    await knex("clientes")
       .where({ id })
       .update({ ...userData });
 
@@ -50,8 +50,9 @@ const updateUser = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ erro: "Erro ao atualizar o usuário" });
+    return res.status(500).json({ erro: "Erro ao atualizar o cliente" });
   }
 };
 
-module.exports = updateUser;
+module.exports = editClient;
+
