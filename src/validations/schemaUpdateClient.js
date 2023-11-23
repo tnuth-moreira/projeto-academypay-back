@@ -1,6 +1,6 @@
 const joi = require("joi");
 
-const schemaEditClient = joi.object({
+const schemaUpdateClient = joi.object({
   nome: joi.string().trim().strict().required().messages({
     "any.required": "O campo Nome é obrigatório.",
     "string.empty": "O preenchimento do nome é obrigatório.",
@@ -35,4 +35,4 @@ const schemaEditClient = joi.object({
   "string.trim": "Os campos não podem conter espaços em branco.",
 });
 
-module.exports = schemaEditClient;
+module.exports = schemaUpdateClient;

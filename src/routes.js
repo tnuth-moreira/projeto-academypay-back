@@ -14,9 +14,9 @@ const updateUser = require("./controllers/updateUser.js");
 const filterAuthorization = require("./middlewares/filterAuthorization.js");
 const validateUpdateUser = require("./middlewares/validateUpdateUser.js");
 const schemaUpdateUser = require("./validations/schemaUpdateUser.js");
-const schemaEditClient = require("./validations/schemaEditClient.js");
-const validateEditClient = require("./middlewares/validateEditClient.js");
-const editClient = require("./controllers/editClient.js");
+const schemaUpdateClient = require("./validations/schemaUpdateClient.js");
+const validateUpdateClient = require("./middlewares/validateUpdateClient.js");
+const updateClient = require("./controllers/updateClient.js");
 
 const routes = express();
 
@@ -35,6 +35,7 @@ routes.post(
 routes.get("/consultClient", consultClient);
 
 routes.put("/updateUser", validateUpdateUser(schemaUpdateUser), updateUser);
-routes.put("/editClient/:id", validateEditClient(schemaEditClient), editClient);
+routes.put("/updateClient/:id", validateUpdateClient(schemaUpdateClient), updateClient);
+
 
 module.exports = routes;

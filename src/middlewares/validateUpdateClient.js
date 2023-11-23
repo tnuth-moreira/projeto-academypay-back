@@ -1,4 +1,4 @@
-const validateEditClient = (joiSchema) => async (req, res, next) => {
+const validateUpdateClient = (joiSchema) => async (req, res, next) => {
   try {
     await joiSchema.validateAsync(req.body);
     next();
@@ -7,4 +7,4 @@ const validateEditClient = (joiSchema) => async (req, res, next) => {
   }
 };
 
-module.exports = validateEditClient;
+module.exports = validateUpdateClient;

@@ -1,8 +1,7 @@
 const knex = require("../database/config");
-const { hash } = require("bcrypt");
-const { searchForClient } = require("../database/ClientQueries");
+const { searchForClient } = require("../database/ClientQuery");
 
-const editClient = async (req, res) => {
+const updateClient = async (req, res) => {
   const { id } = req.user;
   const { nome, email, cpf, telefone, senha } = req.body;
 
@@ -32,12 +31,6 @@ const editClient = async (req, res) => {
       return res.status(409).json({ mensagem: "E-mail já cadastrado!" });
     }
 
-    if (senha) {
-      const encryptedPass = await hash(senha, 10);
-
-      await knex("clientes").where({ id }).update({ senha: encryptedPass });
-    }
-
     const { senha: _, ...userData } = req.body;
 
     await knex("clientes")
@@ -54,5 +47,4 @@ const editClient = async (req, res) => {
   }
 };
 
-module.exports = editClient;
-
+module.exports = updateClient;
