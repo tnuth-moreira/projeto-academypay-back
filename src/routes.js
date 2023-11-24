@@ -17,6 +17,8 @@ const schemaUpdateUser = require("./validations/schemaUpdateUser.js");
 const schemaUpdateClient = require("./validations/schemaUpdateClient.js");
 const validateUpdateClient = require("./middlewares/validateUpdateClient.js");
 const updateClient = require("./controllers/updateClient.js");
+// const consultClientDetails = require("./controllers/clientDetails.js");
+
 
 const routes = express();
 
@@ -33,9 +35,10 @@ routes.post(
 );
 
 routes.get("/consultClient", consultClient);
+// routes.get("/clientsDetails/:id", consultClientDetails)
 
 routes.put("/updateUser", validateUpdateUser(schemaUpdateUser), updateUser);
-routes.put("/updateClient/:id", validateUpdateClient(schemaUpdateClient), updateClient);
+routes.put("/updateClient", validateUpdateClient(schemaUpdateClient), updateClient);
 
 
 module.exports = routes;

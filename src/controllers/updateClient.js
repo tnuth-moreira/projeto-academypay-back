@@ -1,50 +1,52 @@
+const { updateClient } = require("../database/ClientQuery");
 const knex = require("../database/config");
-const { searchForClient } = require("../database/ClientQuery");
 
-const updateClient = async (req, res) => {
-  const { id } = req.user;
-  const { nome, email, cpf, telefone, senha } = req.body;
+const updateClientData = async (req, res) => {
+  const { id: userId } = req.user;
+  const { id: clientId } = req.params;
+  const { nome, email, cpf, telefone, cep, endereco, complemento, bairro, cidade, estado } = req.body;
 
   try {
-    const existingClient = await searchForClient({ id });
+    const existingClient = await knex("clientes")
+      .where({ id: clientId, usuario_id: userId })
+      .first();
 
     if (!existingClient) {
-      return res.status(404).json({ erro: "Cliente não encontrado" });
-    }
-
-    if (cpf) {
-      const cpfExists = await knex("clientes")
-        .where("cpf", cpf)
-        .whereNot("id", id)
-        .first();
-
-      if (cpfExists) {
-        return res.status(409).json({ mensagem: "CPF já cadastrado!" });
-      }
+      return res.status(404).json({ mensagem: "Cliente não encontrado" });
     }
 
     const emailExists = await knex("clientes")
-      .where("email", email)
-      .whereNot("id", id)
+      .whereNot({ id: clientId })
+      .andWhere({ email })
       .first();
+
     if (emailExists) {
-      return res.status(409).json({ mensagem: "E-mail já cadastrado!" });
+      return res.status(400).json({ mensagem: "O e-mail já está cadastrado para outro cliente" });
     }
 
-    const { senha: _, ...userData } = req.body;
+    const cpfExists = await knex("clientes")
+      .whereNot({ id: clientId })
+      .andWhere({ cpf })
+      .first();
 
-    await knex("clientes")
-      .where({ id })
-      .update({ ...userData });
+    if (cpfExists) {
+      return res.status(400).json({ mensagem: "O CPF já está cadastrado para outro cliente" });
+    }
 
-    return res.status(203).json({
-      mensagem: "Atualizado com sucesso",
-      usuario: { id, nome, cpf, telefone, email },
+    const updatedClient = await updateClient(clientId, {
+      nome,
+      email,
+      cpf,
+      telefone
+    });
+
+    return res.status(200).json({
+      mensagem: "Cliente atualizado com sucesso",
+      Cliente: { ...updatedClient },
     });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ erro: "Erro ao atualizar o cliente" });
+    return res.status(500).json({ mensagem: "Erro interno do servidor", erro: error.message });
   }
 };
 
-module.exports = updateClient;
+module.exports = updateClientData;
