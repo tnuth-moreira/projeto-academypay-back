@@ -5,9 +5,12 @@ async function allCharges(req, res) {
   try {
     await knex.raw(`UPDATE cobrancas
     SET status = CASE
-        WHEN cobrancas.status != 'Paga' CURRENT_TIMESTAMP >= cobrancas.data_venc THEN 'Vencida'
-        WHEN CURRENT_TIMESTAMP <= cobrancas.data_venc THEN 'Pendente'
-    END`);
+        WHEN cobrancas.status = 'Paga' THEN 'Paga'
+        WHEN cobrancas.status != 'Paga' AND CURRENT_DATE > cobrancas.data_venc THEN 'Vencida'
+        WHEN CURRENT_DATE = cobrancas.data_venc THEN 'Pendente'
+        ELSE cobrancas.status
+    END;
+    `);
 
     const charges = await knex
       .select(

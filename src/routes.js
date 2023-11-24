@@ -31,7 +31,7 @@ routes.post("/signup", validateUser(userSchema), register);
 
 routes.post("/login", validateRequest(loginSchema), login);
 
-// routes.use(filterAuthorization);
+routes.use(filterAuthorization);
 
 routes.post(
   "/registerClient",
@@ -42,7 +42,6 @@ routes.post(
 routes.get("/consultClient", consultClient);
 
 routes.put("/updateUser", validateUpdateUser(schemaUpdateUser), updateUser);
-
 
 routes.post("/addCharge", validateCharge(chargeSchema), addCharge);
 routes.put(
