@@ -10,11 +10,11 @@ async function deleteCharge(req, res) {
       return res.status(404).json({ mensagem: "A cobrança não existe" });
     }
 
-    // if (charge.status === "Vencida") {
-    //   return res
-    //     .status(400)
-    //     .json({ mensagem: "Você não pode deletar uma cobrança vencida" });
-    // }
+    if (charge.status === "Vencida") {
+      return res
+        .status(400)
+        .json({ mensagem: "Você não pode deletar uma cobrança vencida" });
+    }
 
     await knex("cobrancas").where({ id_cob: idCharge }).del();
 
