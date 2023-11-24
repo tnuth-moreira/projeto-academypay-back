@@ -18,6 +18,10 @@ const addCharge = require("./controllers/chargeController.js");
 const chargeSchema = require("./validations/chargeSchema.js");
 const validateCharge = require("./middlewares/validateCharge.js");
 
+const updateChargeSchema = require("./validations/updateChargeSchema.js");
+const updateCharge = require("./middlewares/updateCharge.js");
+const updateChargeController = require("./controllers/updateChargeController.js");
+
 const routes = express();
 
 routes.post("/signup", validateUser(userSchema), register);
@@ -37,5 +41,10 @@ routes.get("/consultClient", consultClient);
 routes.put("/updateUser", validateUpdateUser(schemaUpdateUser), updateUser);
 
 routes.post("/addCharge", validateCharge(chargeSchema), addCharge);
+routes.put(
+  "/updateCharge",
+  updateCharge(updateChargeSchema),
+  updateChargeController
+);
 
 module.exports = routes;

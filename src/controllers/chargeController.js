@@ -4,11 +4,11 @@ const addCharge = async (req, res) => {
   const { cliente_id, data_venc, valor, status, descricao } = req.body;
 
   try {
-    const localeClientbyID = await knex("clientes")
+    const locateClientbyID = await knex("clientes")
       .where({ id: cliente_id })
       .first();
 
-    if (!localeClientbyID) {
+    if (!locateClientbyID) {
       return res.status(400).json({ mensagem: "Cliente não encontrado" });
     }
 
