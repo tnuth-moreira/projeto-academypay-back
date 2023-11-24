@@ -23,3 +23,18 @@ create table clientes(
  	usuario_id int,
   foreign key (usuario_id) references usuarios(id)
 );
+
+alter table clientes alter column status set default 'Em Dia';
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE cobrancas (
+    id_cob uuid DEFAULT uuid_generate_v4(), 
+    valor int not null, 
+  	data_registro timestamp DEFAULT CURRENT_TIMESTAMP,
+    data_venc date not null, 
+    status text not null, 
+    descricao text not null,
+    cliente_id int,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+);
