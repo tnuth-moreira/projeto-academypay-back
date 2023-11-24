@@ -12,7 +12,7 @@ create table clientes(
   nome text not null,
   email text not null,
   cpf text not null,
-  telefone int not null,
+  telefone text not null,
   status text,
   cep text,
   endereco text,
