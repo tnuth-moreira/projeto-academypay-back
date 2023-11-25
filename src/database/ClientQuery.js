@@ -14,7 +14,7 @@ async function saveClient(client) {
   return newClient[0];
 }
 
-async function updateClientData(id, newData) {
+async function updateClient(id, newData) {
   const updatedClient = await knex("clientes")
     .where({ id })
     .update(newData)
@@ -23,4 +23,4 @@ async function updateClientData(id, newData) {
   return updatedClient[0];
 }
 
-module.exports = { searchForClient, saveClient, updateClientData };
+module.exports = { searchForClient, saveClient, updateClient };

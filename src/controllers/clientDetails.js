@@ -30,8 +30,9 @@ async function clientDetails(req, res) {
 
     return res.status(200).json({ client, charges });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ mensagem: "Erro interno do servidor" });
   }
 }
 
-module.exports = clientDetails;
+module.exports = { clientDetails };
