@@ -35,7 +35,9 @@ const updateUser = async (req, res) => {
     if (senha) {
       const encryptedPass = await hash(senha, 10);
 
-      await knex("usuarios").where({ id }).update({ senha: encryptedPass });
+      await knex("usuarios")
+      .where({ id })
+      .update({ senha: encryptedPass });
     }
 
     const { senha: _, ...userData } = req.body;
