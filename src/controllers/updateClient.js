@@ -4,7 +4,7 @@ const knex = require("../database/config");
 const updateClientData = async (req, res) => {
   const { id: userId } = req.user;
   const { id: clientId } = req.params;
-  const { nome, email, cpf, telefone, cep, endereco, complemento, bairro, cidade, estado } = req.body;
+  const { nome, email, cpf, telefone, cep, endereco, complemento, bairro, cidade, uf } = req.body;
 
   try {
     const existingClient = await knex("clientes")
@@ -37,7 +37,13 @@ const updateClientData = async (req, res) => {
       nome,
       email,
       cpf,
-      telefone
+      telefone,
+      cep,
+      endereco,
+      complemento,
+      bairro,
+      cidade,
+      uf,
     });
 
     return res.status(200).json({

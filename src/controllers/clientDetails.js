@@ -1,22 +1,37 @@
-// const { searchForClient, ... } = require("../database/ClientQuery");
+const knex = require("../database/config");
 
-// const consultClientDetails = async (req, res) => {
-//   const clientId = req.params.id;
+async function clientDetails(req, res) {
+  const { clientId } = req.params;
 
-//   try {
-//     const clientDetails = await searchForClient({ id: clientId });
+  try {
+    const client = await knex("clientes")
+      .select(
+        "nome",
+        "cpf",
+        "email",
+        "telefone",
+        "endereco",
+        "complemento",
+        "bairro",
+        "cidade",
+        "uf",
+        "status"
+      )
+      .where("id", clientId)
+      .first();
 
-//     if (!clientDetails) {
-//       return res.status(404).json({ mensagem: "Cliente não encontrado" });
-//     }
+    if (!client) {
+      return res.status(404).json({ mensagem: "Cliente não encontrado" });
+    }
 
-//     const ... = await ...(clientId);
+    const charges = await knex("cobrancas")
+      .select("id_cob", "descricao", "data_venc", "valor", "status")
+      .where("cliente_id", clientId);
 
-//     res.status(200).json({ clientDetails: clientDetails[0], clientInvoices });
-//   } catch (error) {
-//     console.error("Erro ao obter detalhes do cliente:", error);
-//     res.status(500).json({ erro: "Erro ao obter detalhes do cliente" });
-//   }
-// };
+    return res.status(200).json({ client, charges });
+  } catch (error) {
+    return res.status(500).json({ mensagem: "Erro interno do servidor" });
+  }
+}
 
-// module.exports = consultClientDetails;
+module.exports = clientDetails;

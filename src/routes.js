@@ -17,8 +17,18 @@ const schemaUpdateUser = require("./validations/schemaUpdateUser.js");
 const schemaUpdateClient = require("./validations/schemaUpdateClient.js");
 const validateUpdateClient = require("./middlewares/validateUpdateClient.js");
 const updateClient = require("./controllers/updateClient.js");
-// const consultClientDetails = require("./controllers/clientDetails.js");
+const { clientDetails } = require("./controllers/clientDetails");
 
+
+const addCharge = require("./controllers/chargeController.js");
+const chargeSchema = require("./validations/chargeSchema.js");
+const validateCharge = require("./middlewares/validateCharge.js");
+const updateChargeSchema = require("./validations/updateChargeSchema.js");
+const updateCharge = require("./middlewares/updateCharge.js");
+const updateChargeController = require("./controllers/updateChargeController.js");
+
+const allCharges = require("./controllers/allCharges.js");
+const deleteCharge = require("./controllers/deleteCharge.js");
 
 const routes = express();
 
@@ -35,10 +45,21 @@ routes.post(
 );
 
 routes.get("/consultClient", consultClient);
-// routes.get("/clientsDetails/:id", consultClientDetails)
+routes.get("/clientDetails/:clientId", clientDetails);
 
 routes.put("/updateUser", validateUpdateUser(schemaUpdateUser), updateUser);
-routes.put("/updateClient", validateUpdateClient(schemaUpdateClient), updateClient);
+routes.put("/updateClient/:clientId", validateUpdateClient(schemaUpdateClient), updateClient);
 
+
+routes.post("/addCharge", validateCharge(chargeSchema), addCharge);
+routes.put(
+  "/updateCharge",
+  updateCharge(updateChargeSchema),
+  updateChargeController
+);
+
+routes.get("/allCharges/:clientId", allCharges);
+
+routes.delete("/deleteCharge/:idCharge", deleteCharge);
 
 module.exports = routes;
