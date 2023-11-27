@@ -1,5 +1,5 @@
-const { saveClient } = require("../database/ClientQuery");
-const knex = require("../database/config");
+const { saveClient } = require("../../services/ClientQuery");
+const knex = require("../../database/config");
 
 const registerClient = async (req, res) => {
   const { id } = req.user;

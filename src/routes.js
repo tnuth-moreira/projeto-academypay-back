@@ -1,33 +1,37 @@
 const express = require("express");
 
-const { registerClient } = require("./controllers/register");
-const { consultClient } = require("./controllers/consult");
-const schemaClient = require("./validations/schemaClient");
-const validateRegisterClient = require("./middlewares/validateRegisterClient");
-const validateRequest = require("./middlewares/validateRequest");
-const loginSchema = require("./validations/loginSchema");
-const { login } = require("./controllers/authentication");
-const { register } = require("./controllers/UserController.js");
-const validateUser = require("./middlewares/validateUser.js");
-const userSchema = require("./validations/userSchema.js");
-const updateUser = require("./controllers/updateUser.js");
+const {
+  registerClient,
+} = require("./controllers/clientControllers/register.js");
+const { consultClient } = require("./controllers/clientControllers/consult.js");
+const schemaClient = require("./validations/client/schemaClient.js");
+const validateRegisterClient = require("./middlewares/client/validateRegisterClient.js");
+const validateRequest = require("./middlewares/user/validateRequest.js");
+const loginSchema = require("./validations/user/loginSchema.js");
+const { login } = require("./controllers/userControllers/authentication.js");
+const { register } = require("./controllers/userControllers/UserController.js");
+const validateUser = require("./middlewares/user/validateUser.js");
+const userSchema = require("./validations/user/userSchema.js");
+const updateUser = require("./controllers/userControllers/updateUser.js");
 const filterAuthorization = require("./middlewares/filterAuthorization.js");
-const validateUpdateUser = require("./middlewares/validateUpdateUser.js");
-const schemaUpdateUser = require("./validations/schemaUpdateUser.js");
-const schemaUpdateClient = require("./validations/schemaUpdateClient.js");
-const validateUpdateClient = require("./middlewares/validateUpdateClient.js");
-const updateClient = require("./controllers/updateClient.js");
-const { clientDetails } = require("./controllers/clientDetails");
+const validateUpdateUser = require("./middlewares/user/validateUpdateUser.js");
+const schemaUpdateUser = require("./validations/user/schemaUpdateUser.js");
+const schemaUpdateClient = require("./validations/client/schemaUpdateClient.js");
+const validateUpdateClient = require("./middlewares/client/validateUpdateClient.js");
+const updateClient = require("./controllers/clientControllers/updateClient.js");
+const {
+  clientDetails,
+} = require("./controllers/clientControllers/clientDetails.js");
 
-const addCharge = require("./controllers/chargeController.js");
-const chargeSchema = require("./validations/chargeSchema.js");
-const validateCharge = require("./middlewares/validateCharge.js");
-const updateChargeSchema = require("./validations/updateChargeSchema.js");
-const updateCharge = require("./middlewares/updateCharge.js");
-const updateChargeController = require("./controllers/updateChargeController.js");
+const addCharge = require("./controllers/chargeControllers/chargeController.js");
+const chargeSchema = require("./validations/charge/chargeSchema.js");
+const validateCharge = require("./middlewares/charge/validateCharge.js");
+const updateChargeSchema = require("./validations/charge/updateChargeSchema.js");
+const updateCharge = require("./middlewares/charge/updateCharge.js");
+const updateChargeController = require("./controllers/chargeControllers/updateChargeController.js");
 
-const allCharges = require("./controllers/allCharges.js");
-const deleteCharge = require("./controllers/deleteCharge.js");
+const allCharges = require("./controllers/chargeControllers/allCharges.js");
+const deleteCharge = require("./controllers/chargeControllers/deleteCharge.js");
 
 const routes = express();
 
@@ -54,8 +58,6 @@ routes.put(
   validateUpdateClient(schemaUpdateClient),
   updateClient
 );
-
-routes.post("/addCharge", validateCharge(chargeSchema), addCharge);
 
 routes.get("/allCharges/:clientId", allCharges);
 

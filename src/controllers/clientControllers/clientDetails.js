@@ -1,4 +1,4 @@
-const knex = require("../database/config");
+const knex = require("../../database/config");
 
 async function clientDetails(req, res) {
   const { clientId } = req.params;

@@ -1,5 +1,5 @@
-const { searchForClient } = require("../database/ClientQuery");
-const knex = require("../database/config");
+const { searchForClient } = require("../../services/ClientQuery");
+const knex = require("../../database/config");
 
 const consultClient = async (req, res) => {
   const { id } = req.user;

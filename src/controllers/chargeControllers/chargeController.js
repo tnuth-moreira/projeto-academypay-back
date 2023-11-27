@@ -1,4 +1,4 @@
-const knex = require("../database/config");
+const knex = require("../../database/config");
 
 const addCharge = async (req, res) => {
   const { cliente_id, data_venc, valor, status, descricao } = req.body;

@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { findUser } = require("../database/UserQueries");
+const { findUser } = require("../../services/UserQueries");
 
 const hash = process.env.JWT_HASH;
 

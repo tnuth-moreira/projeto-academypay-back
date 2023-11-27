@@ -1,5 +1,5 @@
 const { hash } = require("bcrypt");
-const { saveUser, findUser } = require("../database/UserQueries");
+const { saveUser, findUser } = require("../../services/UserQueries");
 
 async function register(req, res) {
   const { nome, email, senha } = req.body;

@@ -1,5 +1,5 @@
-const { updateClient } = require("../database/ClientQuery");
-const knex = require("../database/config");
+const { updateClient } = require("../../services/ClientQuery");
+const knex = require("../../database/config");
 
 const updateClientData = async (req, res) => {
   const { id: userId } = req.user;
@@ -17,8 +17,6 @@ const updateClientData = async (req, res) => {
     uf,
   } = req.body;
 
-  // console.log(clientId);
-  console.log(userId);
   try {
     const existingClient = await knex("clientes")
       .where({ id: clientId, usuario_id: userId })
