@@ -1,4 +1,4 @@
-const knex = require("./config");
+const knex = require("../database/config");
 
 async function searchForClient(column) {
   const data = await knex("clientes")

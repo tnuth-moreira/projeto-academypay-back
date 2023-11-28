@@ -1,7 +1,7 @@
-const { searchForClient } = require("../database/ClientQuery");
-const knex = require("../database/config");
+const { searchForClient } = require("../../services/ClientQuery");
+const knex = require("../../database/config");
 
-const consultClient = async (req, res) => {
+async function consultClient(req, res) {
   const { id } = req.user;
 
   try {
@@ -25,8 +25,6 @@ const consultClient = async (req, res) => {
     console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor" });
   }
-};
+}
 
-module.exports = {
-  consultClient,
-};
+module.exports = consultClient;

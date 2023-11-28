@@ -1,7 +1,7 @@
-const { updateClient } = require("../database/ClientQuery");
-const knex = require("../database/config");
+const { updateClient } = require("../../services/ClientQuery");
+const knex = require("../../database/config");
 
-const updateClientData = async (req, res) => {
+async function updateClientData(req, res) {
   const { id: userId } = req.user;
   const { clientId } = req.params;
   const {
@@ -17,8 +17,6 @@ const updateClientData = async (req, res) => {
     uf,
   } = req.body;
 
-  // console.log(clientId);
-  console.log(userId);
   try {
     const existingClient = await knex("clientes")
       .where({ id: clientId, usuario_id: userId })
@@ -72,6 +70,6 @@ const updateClientData = async (req, res) => {
       .status(500)
       .json({ mensagem: "Erro interno do servidor", erro: error.message });
   }
-};
+}
 
 module.exports = updateClientData;
