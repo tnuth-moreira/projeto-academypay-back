@@ -1,6 +1,6 @@
 const knex = require("../../database/config");
 
-const addCharge = async (req, res) => {
+async function addCharge(req, res) {
   const { cliente_id, data_venc, valor, status, descricao } = req.body;
 
   try {
@@ -31,6 +31,6 @@ const addCharge = async (req, res) => {
       .status(500)
       .json({ mensagem: "Erro interno do servidor", erro: error.message });
   }
-};
+}
 
 module.exports = addCharge;

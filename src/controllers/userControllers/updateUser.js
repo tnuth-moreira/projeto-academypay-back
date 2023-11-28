@@ -2,7 +2,7 @@ const knex = require("../../database/config");
 const { hash } = require("bcrypt");
 const { findUser } = require("../../services/UserQueries");
 
-const updateUser = async (req, res) => {
+async function updateUser(req, res) {
   const { id } = req.user;
   const { nome, email, cpf, telefone, senha } = req.body;
 
@@ -52,6 +52,6 @@ const updateUser = async (req, res) => {
     console.log(error);
     return res.status(500).json({ erro: "Erro ao atualizar o usuário" });
   }
-};
+}
 
 module.exports = updateUser;

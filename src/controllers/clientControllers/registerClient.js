@@ -1,7 +1,7 @@
 const { saveClient } = require("../../services/ClientQuery");
 const knex = require("../../database/config");
 
-const registerClient = async (req, res) => {
+async function registerClient(req, res) {
   const { id } = req.user;
   const { email, cpf } = req.body;
   try {
@@ -41,8 +41,6 @@ const registerClient = async (req, res) => {
       .status(500)
       .json({ mensagem: "Erro interno do servidor", erro: error.message });
   }
-};
+}
 
-module.exports = {
-  registerClient,
-};
+module.exports = registerClient;

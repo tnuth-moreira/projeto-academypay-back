@@ -1,7 +1,7 @@
 const { hash } = require("bcrypt");
 const { saveUser, findUser } = require("../../services/UserQueries");
 
-async function register(req, res) {
+async function registerUser(req, res) {
   const { nome, email, senha } = req.body;
 
   try {
@@ -35,4 +35,4 @@ async function register(req, res) {
   }
 }
 
-module.exports = { register };
+module.exports = registerUser;
