@@ -1,4 +1,4 @@
-const knex = require("../database/config");
+const knex = require("../../database/config");
 
 async function clientDetails(req, res) {
   const { clientId } = req.params;
@@ -12,6 +12,7 @@ async function clientDetails(req, res) {
         "telefone",
         "endereco",
         "complemento",
+        "cep",
         "bairro",
         "cidade",
         "uf",
@@ -30,8 +31,9 @@ async function clientDetails(req, res) {
 
     return res.status(200).json({ client, charges });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ mensagem: "Erro interno do servidor" });
   }
 }
 
-module.exports = { clientDetails };
+module.exports = clientDetails;

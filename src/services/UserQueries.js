@@ -1,4 +1,4 @@
-const knex = require("./config");
+const knex = require("../database/config");
 
 async function saveUser(user) {
   const userCreated = await knex("usuarios").insert(user).returning("*");

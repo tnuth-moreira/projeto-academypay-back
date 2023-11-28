@@ -1,8 +1,8 @@
-const knex = require("../database/config");
+const knex = require("../../database/config");
 const { hash } = require("bcrypt");
-const { findUser } = require("../database/UserQueries");
+const { findUser } = require("../../services/UserQueries");
 
-const updateUser = async (req, res) => {
+async function updateUser(req, res) {
   const { id } = req.user;
   const { nome, email, cpf, telefone, senha } = req.body;
 
@@ -35,9 +35,7 @@ const updateUser = async (req, res) => {
     if (senha) {
       const encryptedPass = await hash(senha, 10);
 
-      await knex("usuarios")
-      .where({ id })
-      .update({ senha: encryptedPass });
+      await knex("usuarios").where({ id }).update({ senha: encryptedPass });
     }
 
     const { senha: _, ...userData } = req.body;
@@ -54,6 +52,6 @@ const updateUser = async (req, res) => {
     console.log(error);
     return res.status(500).json({ erro: "Erro ao atualizar o usuário" });
   }
-};
+}
 
 module.exports = updateUser;
