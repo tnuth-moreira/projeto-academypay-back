@@ -12,6 +12,7 @@ async function clientDetails(req, res) {
         "telefone",
         "endereco",
         "complemento",
+        "cep",
         "bairro",
         "cidade",
         "uf",
