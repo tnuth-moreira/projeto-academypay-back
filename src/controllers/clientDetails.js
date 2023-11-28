@@ -34,4 +34,4 @@ async function clientDetails(req, res) {
   }
 }
 
-module.exports = clientDetails;
+module.exports = { clientDetails };

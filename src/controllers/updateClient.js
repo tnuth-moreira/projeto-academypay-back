@@ -2,8 +2,8 @@ const { updateClient } = require("../database/ClientQuery");
 const knex = require("../database/config");
 
 const updateClientData = async (req, res) => {
-  const { id: userId } = req.user;
-  const { id: clientId } = req.params;
+  // const { id: userId } = req.user;
+  const clientId  = req.params;
   const { nome, email, cpf, telefone, cep, endereco, complemento, bairro, cidade, uf } = req.body;
 
   try {
