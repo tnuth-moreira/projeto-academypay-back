@@ -1,7 +1,7 @@
 const knex = require("../../database/config");
 
 async function allCharges(req, res) {
-  const { clientId } = req.params;
+  const { id } = req.user;
   try {
     await knex.raw(`UPDATE cobrancas
     SET status = CASE
@@ -19,11 +19,13 @@ async function allCharges(req, res) {
         "cobrancas.valor",
         "cobrancas.data_venc",
         "cobrancas.status",
-        "cobrancas.descricao"
+        "cobrancas.descricao",
+        "clientes.usuario_id",
+        "clientes.id"
       )
       .from("cobrancas")
-      .rightJoin("clientes", "clientes.id", "cobrancas.cliente_id")
-      .where("clientes.id", clientId);
+      .join("clientes", "clientes.id", "cobrancas.cliente_id")
+      .where("clientes.usuario_id", id);
 
     res.status(200).json(charges);
   } catch (error) {

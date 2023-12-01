@@ -14,7 +14,7 @@ const deleteCharge = require("../controllers/chargeControllers/deleteCharge.js")
 routes.use(filterAuthorization);
 
 routes.post("/addCharge", validateCharge(chargeSchema), addCharge);
-routes.get("/allCharges/:clientId", allCharges);
+routes.get("/allCharges", allCharges);
 routes.put(
   "/updateCharge",
   updateCharge(updateChargeSchema),
