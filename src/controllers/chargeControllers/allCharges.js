@@ -29,7 +29,10 @@ async function allCharges(req, res) {
 
     res.status(200).json(charges);
   } catch (error) {
-    return res.status(500).json({ mensagem: "erro interno do servidor" });
+    return res.status(500).json({
+      mensagem: "Algo inesperado aconteceu ao carregar as cobranças",
+      erro: error.message,
+    });
   }
 }
 

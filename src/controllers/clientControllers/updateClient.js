@@ -67,9 +67,10 @@ async function updateClientData(req, res) {
       Cliente: { ...updatedClient },
     });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ mensagem: "Erro interno do servidor", erro: error.message });
+    return res.status(500).json({
+      mensagem: "Algo inesperado aconteceu ao atualizar as informações",
+      erro: error.message,
+    });
   }
 }
 

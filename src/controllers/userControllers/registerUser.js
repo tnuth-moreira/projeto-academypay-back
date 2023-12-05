@@ -31,7 +31,10 @@ async function registerUser(req, res) {
       },
     });
   } catch (error) {
-    return res.status(500).json({ mensagem: error.message });
+    return res.status(500).json({
+      mensagem: "Algo inesperado aconteceu ao realizar cadastro",
+      erro: error.message,
+    });
   }
 }
 
