@@ -12,7 +12,6 @@ const updateClient = require("../controllers/clientControllers/updateClient.js")
 const clientDetails = require("../controllers/clientControllers/clientDetails.js");
 
 routes.use(filterAuthorization);
-
 routes.post(
   "/registerClient",
   validateRegisterClient(schemaClient),
