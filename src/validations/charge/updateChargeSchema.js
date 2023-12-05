@@ -1,6 +1,11 @@
 const joi = require("joi");
 
 const updateChargeSchema = joi.object({
+  cliente_id: joi.number().positive().required().messages({
+    "any.required": "Por favor preencha todos os campos",
+    "number.base": "Por favor informe um número válido",
+    "number.positive": "Por favor informe um valor positivo",
+  }),
   id_cob: joi.string().required().messages({
     "any.required": "Por favor preencha todos os campos",
     "string.empty": "O preenchimento do id da cobrança é obrigatório",

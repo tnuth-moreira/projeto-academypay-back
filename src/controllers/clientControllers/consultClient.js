@@ -22,8 +22,10 @@ async function consultClient(req, res) {
 
     return res.status(200).json(clients);
   } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ mensagem: "Erro interno do servidor" });
+    return res.status(500).json({
+      mensagem: "Algo inesperado aconteceu ao carregar as informações",
+      erro: error.message,
+    });
   }
 }
 
