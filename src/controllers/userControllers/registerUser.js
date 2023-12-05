@@ -3,7 +3,6 @@ const { saveUser, findUser } = require("../../services/UserQueries");
 
 async function registerUser(req, res) {
   const { nome, email, senha } = req.body;
-
   try {
     const encryptedPass = await hash(senha, 10);
 
