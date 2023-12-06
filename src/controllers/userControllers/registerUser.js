@@ -3,7 +3,6 @@ const { saveUser, findUser } = require("../../services/UserQueries");
 
 async function registerUser(req, res) {
   const { nome, email, senha } = req.body;
-
   try {
     const encryptedPass = await hash(senha, 10);
 
@@ -31,7 +30,10 @@ async function registerUser(req, res) {
       },
     });
   } catch (error) {
-    return res.status(500).json({ mensagem: error.message });
+    return res.status(500).json({
+      mensagem: "Algo inesperado aconteceu ao realizar cadastro",
+      erro: error.message,
+    });
   }
 }
 

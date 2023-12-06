@@ -1,7 +1,7 @@
 const knex = require("../../database/config");
 
 async function addCharge(req, res) {
-  const { cliente_id, data_venc, valor, status, descricao } = req.body;
+  const { cliente_id, status } = req.body;
 
   try {
     const locateClientbyID = await knex("clientes")
@@ -12,7 +12,7 @@ async function addCharge(req, res) {
       return res.status(400).json({ mensagem: "Cliente não encontrado" });
     }
 
-    if (!["Pendente", "Paga", "Vencida"].includes(status)) {
+    if (!["Pendente", "Paga"].includes(status)) {
       return res.status(400).json({ mensagem: "Status de cobrança inválido" });
     }
 
@@ -27,9 +27,10 @@ async function addCharge(req, res) {
       cobranca: newCharge,
     });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ mensagem: "Erro interno do servidor", erro: error.message });
+    return res.status(500).json({
+      mensagem: "Algo inesperado aconteceu ao adicionar a cobrança",
+      erro: error.message,
+    });
   }
 }
 

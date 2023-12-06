@@ -1,6 +1,7 @@
 const knex = require("../../database/config");
 
 async function clientDetails(req, res) {
+  const { id } = req.user;
   const { clientId } = req.params;
 
   try {
@@ -16,9 +17,10 @@ async function clientDetails(req, res) {
         "bairro",
         "cidade",
         "uf",
-        "status"
+        "status",
+        "usuario_id"
       )
-      .where("id", clientId)
+      .where({ id: clientId, usuario_id: id })
       .first();
 
     if (!client) {
@@ -26,13 +28,26 @@ async function clientDetails(req, res) {
     }
 
     const charges = await knex("cobrancas")
-      .select("id_cob", "descricao", "data_venc", "valor", "status")
+      .select(
+        "id_cob",
+        "descricao",
+        "data_venc",
+        "valor",
+        knex.raw(`CASE
+        WHEN cobrancas.status = 'Paga' THEN 'Paga'
+        WHEN cobrancas.status != 'Paga' AND CURRENT_DATE > cobrancas.data_venc THEN 'Vencida'
+        WHEN CURRENT_DATE = cobrancas.data_venc THEN 'Pendente'
+        ELSE cobrancas.status
+    END as "status"`)
+      )
       .where("cliente_id", clientId);
 
     return res.status(200).json({ client, charges });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ mensagem: "Erro interno do servidor" });
+    return res.status(500).json({
+      mensagem: "Algo inesperado aconteceu ao carregar as informações",
+      erro: error.message,
+    });
   }
 }
 
