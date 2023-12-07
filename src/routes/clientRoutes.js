@@ -10,6 +10,7 @@ const schemaUpdateClient = require("../validations/client/schemaUpdateClient.js"
 const validateUpdateClient = require("../middlewares/client/validateUpdateClient.js");
 const updateClient = require("../controllers/clientControllers/updateClient.js");
 const clientDetails = require("../controllers/clientControllers/clientDetails.js");
+const dashboardClients = require("../controllers/clientControllers/dashboardClients.js");
 
 routes.use(filterAuthorization);
 routes.post(
@@ -24,5 +25,6 @@ routes.put(
   validateUpdateClient(schemaUpdateClient),
   updateClient
 );
+routes.get("/dashboardClients", dashboardClients);
 
 module.exports = routes;
