@@ -1,4 +1,5 @@
 const knex = require("../../database/config");
+const { isAfter } = require("date-fns");
 
 async function deleteCharge(req, res) {
   const { id } = req.user;
@@ -23,6 +24,15 @@ async function deleteCharge(req, res) {
       return res
         .status(400)
         .json({ mensagem: "Essa cobrança não pode ser deletada" });
+    }
+
+    const currentDate = new Date();
+
+    if (!isAfter(charge.data_venc, currentDate)) {
+      return res.status(400).json({
+        mensagem:
+          "Essa cobrança não pode ser deletada, pois a data de vencimento já expirou.",
+      });
     }
 
     await knex("cobrancas").where({ id_cob: idCharge }).del();

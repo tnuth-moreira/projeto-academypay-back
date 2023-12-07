@@ -19,7 +19,7 @@ const userSchema = joi.object({
     .trim()
     .strict()
     .pattern(
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%?&])[0-9a-zA-Z@$!%?&]{8,}$/
     )
     .min(8)
     .required()
@@ -29,7 +29,7 @@ const userSchema = joi.object({
       "string.min": "A senha precisa conter, no mínimo, 8 caracteres",
       "string.base": "Insira uma senha válida",
       "string.pattern.base":
-        "Sua senha deverá conter no mínimo 8 caracteres sendo eles: 1 letra maiúscula, 1 número e 1 símbolo $*@&#",
+        "Sua senha deverá conter no mínimo 8 caracteres sendo eles: 1 letra maiúscula, 1 número e 1 símbolo @,$,!,%,? ou &",
       "string.trim": "O campo senha não pode conter espaços em branco",
     }),
 });
