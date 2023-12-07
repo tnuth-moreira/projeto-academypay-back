@@ -10,11 +10,13 @@ const updateCharge = require("../middlewares/charge/updateCharge.js");
 const updateChargeController = require("../controllers/chargeControllers/updateCharge.js");
 const allCharges = require("../controllers/chargeControllers/allCharges.js");
 const deleteCharge = require("../controllers/chargeControllers/deleteCharge.js");
+const chargeDetails = require("../controllers/chargeControllers/chargeDetails.js");
 
 routes.use(filterAuthorization);
 
 routes.post("/addCharge", validateCharge(chargeSchema), addCharge);
 routes.get("/allCharges", allCharges);
+routes.get("/chargeDetails/:idCharge", chargeDetails);
 routes.put(
   "/updateCharge",
   updateCharge(updateChargeSchema),
