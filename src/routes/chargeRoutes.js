@@ -18,13 +18,12 @@ routes.use(filterAuthorization);
 routes.post("/addCharge", validateCharge(chargeSchema), addCharge);
 routes.get("/allCharges", allCharges);
 routes.get("/chargeDetails/:idCharge", chargeDetails);
+routes.get("/searchCharges", searchCharges);
 routes.put(
   "/updateCharge",
   updateCharge(updateChargeSchema),
   updateChargeController
 );
 routes.delete("/deleteCharge/:idCharge", deleteCharge);
-
-routes.get("/searchCharges", searchCharges);
 
 module.exports = routes;
