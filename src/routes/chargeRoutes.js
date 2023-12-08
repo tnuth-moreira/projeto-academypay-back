@@ -10,8 +10,12 @@ const updateCharge = require("../middlewares/charge/updateCharge.js");
 const updateChargeController = require("../controllers/chargeControllers/updateCharge.js");
 const allCharges = require("../controllers/chargeControllers/allCharges.js");
 const deleteCharge = require("../controllers/chargeControllers/deleteCharge.js");
+
+const dashboardCharges = require("../controllers/chargeControllers/dashboardCharges.js");
+
 const chargeDetails = require("../controllers/chargeControllers/chargeDetails.js");
 const searchCharges = require("../controllers/chargeControllers/searchCharges.js");
+
 
 routes.use(filterAuthorization);
 
@@ -25,5 +29,6 @@ routes.put(
   updateChargeController
 );
 routes.delete("/deleteCharge/:idCharge", deleteCharge);
+routes.get("/dashboardCharges/", dashboardCharges);
 
 module.exports = routes;

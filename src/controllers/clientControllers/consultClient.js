@@ -3,6 +3,9 @@ const knex = require("../../database/config");
 
 async function consultClient(req, res) {
   const { id } = req.user;
+  const { status } = req.query;
+
+  console.log(status);
 
   try {
     const clients = await searchForClient({ usuario_id: id });
@@ -19,6 +22,14 @@ async function consultClient(req, res) {
           AND cobrancas.status = 'Pendente') THEN 'Em dia'
         ELSE 'Em dia'
     END;`);
+
+    if (status) {
+      const clients = await knex("clientes")
+        .where({ usuario_id: id, status })
+        .returning("*");
+
+      return res.status(200).json(clients);
+    }
 
     return res.status(200).json(clients);
   } catch (error) {
