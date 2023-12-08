@@ -11,6 +11,7 @@ const updateChargeController = require("../controllers/chargeControllers/updateC
 const allCharges = require("../controllers/chargeControllers/allCharges.js");
 const deleteCharge = require("../controllers/chargeControllers/deleteCharge.js");
 const chargeDetails = require("../controllers/chargeControllers/chargeDetails.js");
+const searchCharges = require("../controllers/chargeControllers/searchCharges.js");
 
 routes.use(filterAuthorization);
 
@@ -23,5 +24,7 @@ routes.put(
   updateChargeController
 );
 routes.delete("/deleteCharge/:idCharge", deleteCharge);
+
+routes.get("/searchCharges", searchCharges);
 
 module.exports = routes;
