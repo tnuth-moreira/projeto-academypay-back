@@ -2,7 +2,7 @@ const { updateClient } = require("../../services/ClientQuery");
 const knex = require("../../database/config");
 
 async function updateClientData(req, res) {
-  const { id: userId } = req.user;
+  const { id } = req.user;
   const { clientId } = req.params;
   const {
     nome,
@@ -19,7 +19,7 @@ async function updateClientData(req, res) {
 
   try {
     const existingClient = await knex("clientes")
-      .where({ id: clientId, usuario_id: userId })
+      .where({ id: clientId, usuario_id: id })
       .first();
 
     if (!existingClient) {
@@ -40,6 +40,7 @@ async function updateClientData(req, res) {
     const cpfExists = await knex("clientes")
       .whereNot({ id: clientId })
       .andWhere({ cpf })
+      .andWhere({ usuario_id: id })
       .first();
 
     if (cpfExists) {
@@ -66,9 +67,10 @@ async function updateClientData(req, res) {
       Cliente: { ...updatedClient },
     });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ mensagem: "Erro interno do servidor", erro: error.message });
+    return res.status(500).json({
+      mensagem: "Algo inesperado aconteceu ao atualizar as informações",
+      erro: error.message,
+    });
   }
 }
 

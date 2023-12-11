@@ -49,8 +49,10 @@ async function updateUser(req, res) {
       usuario: { id, nome, cpf, telefone, email },
     });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ erro: "Erro ao atualizar o usuário" });
+    return res.status(500).json({
+      mensagem: "Algo inesperado aconteceu ao atualizar as informações",
+      erro: error.message,
+    });
   }
 }
 
