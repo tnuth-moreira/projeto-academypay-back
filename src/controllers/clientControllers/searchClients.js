@@ -2,28 +2,35 @@ const knex = require("../../database/config");
 
 async function searchClients(req, res) {
   const { id } = req.user;
-  const { searchTerm, orderBy } = req.query;
+  const { searchTerm, orderBy, typeOrderBy } = req.query;
 
   try {
     let clientsQuery = knex("clientes")
-      .select("id", "nome", "cpf", "email")
+      .select("id", "nome", "cpf", "email", "telefone", "status")
       .where((builder) => {
-        builder.where("nome", "ilike", `%${searchTerm}%`)
-          .orWhere("cpf", "ilike", `%${searchTerm}%`)
-          .orWhere("email", "ilike", `%${searchTerm}%`);
+        const translateName = knex.raw(`TRANSLATE(LOWER(nome),
+        'ÁÀÂÃÄáàâãäÉÈÊËéèêëÍÌÎÏíìîïÓÒÕÔÖóòôõöÚÙÛÜúùûüÇç',
+        'AAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUUuuuuÇc')`);
+
+        const filterName =
+          knex.raw(`TRANSLATE(LOWER('%${searchTerm}%'), 'ÁÀÂÃÄáàâãäÉÈÊËéèêëÍÌÎÏíìîïÓÒÕÔÖóòôõöÚÙÛÜúùûüÇç',
+        'AAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUUuuuuÇc')`);
+
+        if (searchTerm) {
+          builder
+            .whereILike(translateName, filterName)
+            .orWhereILike("cpf", `%${searchTerm}%`)
+            .orWhereILike("email", `%${searchTerm}%`);
+        }
       })
       .andWhere("usuario_id", id);
 
-      
     if (orderBy === "nome") {
-      clientsQuery = clientsQuery.orderBy("nome");
+      const orderByType = typeOrderBy ? typeOrderBy : "asc";
+      clientsQuery = clientsQuery.orderBy("nome", orderByType);
     }
 
     const clients = await clientsQuery;
-
-    if (clients.length === 0) {
-      return res.status(404).json({ mensagem: "Nenhum cliente encontrado" });
-    }
 
     return res.status(200).json(clients);
   } catch (error) {

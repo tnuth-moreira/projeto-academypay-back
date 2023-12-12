@@ -5,8 +5,6 @@ async function consultClient(req, res) {
   const { id } = req.user;
   const { status } = req.query;
 
-  console.log(status);
-
   try {
     const clients = await searchForClient({ usuario_id: id });
 
