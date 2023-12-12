@@ -3,6 +3,7 @@ const knex = require("../../database/config");
 
 async function consultClient(req, res) {
   const { id } = req.user;
+  const { status } = req.query;
 
   try {
     const clients = await searchForClient({ usuario_id: id });
@@ -20,10 +21,20 @@ async function consultClient(req, res) {
         ELSE 'Em dia'
     END;`);
 
+    if (status) {
+      const clients = await knex("clientes")
+        .where({ usuario_id: id, status })
+        .returning("*");
+
+      return res.status(200).json(clients);
+    }
+
     return res.status(200).json(clients);
   } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ mensagem: "Erro interno do servidor" });
+    return res.status(500).json({
+      mensagem: "Algo inesperado aconteceu ao carregar as informações",
+      erro: error.message,
+    });
   }
 }
 

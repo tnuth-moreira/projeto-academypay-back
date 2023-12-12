@@ -10,9 +10,11 @@ const schemaUpdateClient = require("../validations/client/schemaUpdateClient.js"
 const validateUpdateClient = require("../middlewares/client/validateUpdateClient.js");
 const updateClient = require("../controllers/clientControllers/updateClient.js");
 const clientDetails = require("../controllers/clientControllers/clientDetails.js");
+const dashboardClients = require("../controllers/clientControllers/dashboardClients.js");
+const searchClients = require("../controllers/clientControllers/searchClients.js");
+
 
 routes.use(filterAuthorization);
-
 routes.post(
   "/registerClient",
   validateRegisterClient(schemaClient),
@@ -20,10 +22,12 @@ routes.post(
 );
 routes.get("/consultClient", consultClient);
 routes.get("/clientDetails/:clientId", clientDetails);
+routes.get("/searchClients", searchClients);
 routes.put(
   "/updateClient/:clientId",
   validateUpdateClient(schemaUpdateClient),
   updateClient
 );
+routes.get("/dashboardClients", dashboardClients);
 
 module.exports = routes;
