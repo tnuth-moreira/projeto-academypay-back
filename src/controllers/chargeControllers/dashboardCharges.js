@@ -13,11 +13,7 @@ async function dashboardCharges(req, res) {
           "clientes.nome",
           "cobrancas.id_cob",
           "cobrancas.valor",
-          "cobrancas.data_venc",
-          "cobrancas.status",
-          "cobrancas.descricao",
-          "clientes.usuario_id",
-          "clientes.id"
+          "cobrancas.status"
         )
         .from("cobrancas")
         .join("clientes", "clientes.id", "cobrancas.cliente_id")
@@ -29,11 +25,7 @@ async function dashboardCharges(req, res) {
           "clientes.nome",
           "cobrancas.id_cob",
           "cobrancas.valor",
-          "cobrancas.data_venc",
-          "cobrancas.status",
-          "cobrancas.descricao",
-          "clientes.usuario_id",
-          "clientes.id"
+          "cobrancas.status"
         )
         .from("cobrancas")
         .join("clientes", "clientes.id", "cobrancas.cliente_id")
@@ -46,11 +38,16 @@ async function dashboardCharges(req, res) {
         0
       );
 
-      dashboardCharges[status] = { charges: fourCharges, total: total };
+      dashboardCharges[status] = {
+        charges: fourCharges,
+        total: total,
+        quantidade: charges.length,
+      };
     }
 
     return res.status(200).json(dashboardCharges);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       mensagem: "erro ao tentar buscar as cobranças",
       erro: error.message,
