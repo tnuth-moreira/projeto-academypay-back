@@ -1,5 +1,4 @@
 const knex = require("../../database/config");
-const { validate } = require("uuid");
 
 async function searchCharges(req, res) {
   const { id } = req.user;
@@ -18,17 +17,22 @@ async function searchCharges(req, res) {
       )
       .join("clientes", "cobrancas.cliente_id", "clientes.id")
       .where((builder) => {
-        if (validate(searchTerm)) {
-          builder.orWhere("cobrancas.id_cob", searchTerm);
-        } else {
-          builder.where("clientes.nome", "ilike", `%${searchTerm}%`);
-        }
-      })
-      .andWhere("clientes.usuario_id", id);
+        const translateName = knex.raw(`TRANSLATE(LOWER(clientes.nome),
+        'ÁÀÂÃÄáàâãäÉÈÊËéèêëÍÌÎÏíìîïÓÒÕÔÖóòôõöÚÙÛÜúùûüÇç',
+        'AAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUUuuuuÇc')`);
 
-    if (charges.length === 0) {
-      return res.status(404).json({ mensagem: "Nenhuma cobrança cadastrada" });
-    }
+        const filterName =
+          knex.raw(`TRANSLATE(LOWER('%${searchTerm}%'), 'ÁÀÂÃÄáàâãäÉÈÊËéèêëÍÌÎÏíìîïÓÒÕÔÖóòôõöÚÙÛÜúùûüÇç',
+        'AAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUUuuuuÇc')`);
+
+        builder.whereILike(translateName, filterName);
+        builder.orWhereILike(
+          knex.raw(`cast(cobrancas.id_cob as text)`),
+          `%${searchTerm}%`
+        );
+      })
+
+      .andWhere("clientes.usuario_id", id);
 
     return res.status(200).json(charges);
   } catch (error) {

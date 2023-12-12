@@ -11,6 +11,8 @@ const validateUpdateClient = require("../middlewares/client/validateUpdateClient
 const updateClient = require("../controllers/clientControllers/updateClient.js");
 const clientDetails = require("../controllers/clientControllers/clientDetails.js");
 const dashboardClients = require("../controllers/clientControllers/dashboardClients.js");
+const searchClients = require("../controllers/clientControllers/searchClients.js");
+
 
 routes.use(filterAuthorization);
 routes.post(
@@ -20,6 +22,7 @@ routes.post(
 );
 routes.get("/consultClient", consultClient);
 routes.get("/clientDetails/:clientId", clientDetails);
+routes.get("/searchClients", searchClients);
 routes.put(
   "/updateClient/:clientId",
   validateUpdateClient(schemaUpdateClient),
