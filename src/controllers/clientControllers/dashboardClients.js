@@ -6,23 +6,41 @@ async function dashboardClients(req, res) {
   try {
     const clientsUpToDate = await knex("clientes")
       .where({ usuario_id: id, status: "Em dia" })
-      .returning("*")
+      .select("id", "nome", "cpf")
       .limit(4);
+
+    const [amountClientsUpToDate] = await knex("clientes")
+      .where({
+        usuario_id: id,
+        status: "Em dia",
+      })
+      .count({ count: ["id"] });
 
     const defaultingClients = await knex("clientes")
       .where({
         usuario_id: id,
         status: "Inadimplente",
       })
-      .returning("*")
+      .select("id", "nome", "cpf")
       .limit(4);
 
-    res
-      .status(200)
-      .json({
-        clientesEmdia: clientsUpToDate,
-        clientesInadimplentes: defaultingClients,
-      });
+    const [amountDefaultingClients] = await knex("clientes")
+      .where({
+        usuario_id: id,
+        status: "Inadimplente",
+      })
+      .count({ count: ["id"] });
+
+    res.status(200).json({
+      clientesEmdia: {
+        clientes: clientsUpToDate,
+        quantidade: amountClientsUpToDate.count,
+      },
+      clientesInadimplentes: {
+        clientes: defaultingClients,
+        quantidade: amountDefaultingClients.count,
+      },
+    });
   } catch (error) {
     return res.status(500).json({
       mensagem: "Erro ao tentar consultar os clientes",
