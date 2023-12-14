@@ -7,7 +7,7 @@ async function searchCharges(req, res) {
   try {
     const charges = await knex("cobrancas")
       .select(
-        "clientes.nome as cliente_nome",
+        "clientes.nome as nome",
         "clientes.id",
         "cobrancas.id_cob",
         "cobrancas.valor",
