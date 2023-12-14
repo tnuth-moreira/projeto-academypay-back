@@ -47,7 +47,6 @@ async function dashboardCharges(req, res) {
 
     return res.status(200).json(dashboardCharges);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       mensagem: "erro ao tentar buscar as cobranças",
       erro: error.message,
