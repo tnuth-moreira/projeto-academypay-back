@@ -1,7 +1,8 @@
 const knex = require("../../database/config");
+const { isAfter, parseISO } = require("date-fns");
 
 async function addCharge(req, res) {
-  const { cliente_id, status } = req.body;
+  const { cliente_id, status, data_venc } = req.body;
 
   try {
     const locateClientbyID = await knex("clientes")
@@ -14,6 +15,17 @@ async function addCharge(req, res) {
 
     if (!["Pendente", "Paga"].includes(status)) {
       return res.status(400).json({ mensagem: "Status de cobrança inválido" });
+    }
+
+    const currentDate = new Date();
+    const dueDate = parseISO(data_venc);
+
+    if (isAfter(currentDate, dueDate)) {
+      req.body.status = "Vencida";
+
+      await knex("clientes")
+        .where({ id: cliente_id })
+        .update({ status: "Inadimplente" });
     }
 
     const newCharge = await knex("cobrancas").insert(req.body).returning("*");
