@@ -20,7 +20,7 @@ async function addCharge(req, res) {
     const currentDate = new Date();
     const dueDate = parseISO(data_venc);
 
-    if (isAfter(currentDate, dueDate)) {
+    if (isAfter(currentDate, dueDate) & (status !== "Paga")) {
       req.body.status = "Vencida";
 
       await knex("clientes")
