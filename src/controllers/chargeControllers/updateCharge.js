@@ -1,9 +1,9 @@
 const knex = require("../../database/config");
-const { isAfter, parseISO } = require("date-fns");
+const { isAfter, parseISO, startOfDay } = require("date-fns");
 
 function isDateInPast(date) {
-  const currentDate = new Date();
-  const dueDate = parseISO(date);
+  const currentDate = startOfDay(new Date());
+  const dueDate = startOfDay(parseISO(date));
   return isAfter(currentDate, dueDate);
 }
 
@@ -48,6 +48,10 @@ async function updateCharge(req, res) {
     await knex("clientes")
       .where({ id: cliente_id })
       .update({ status: newClientStatus });
+
+    if (status === "Pendente" && isDateInPast(data_venc)) {
+      status = "Vencida";
+    }
 
     const updatedCharge = await knex("cobrancas")
       .where({ id_cob })
