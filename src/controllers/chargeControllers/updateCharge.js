@@ -1,22 +1,8 @@
 const knex = require("../../database/config");
-const { isAfter, parseISO, startOfDay } = require("date-fns");
-
-function isDateInPast(date) {
-  const currentDate = startOfDay(new Date());
-  const dueDate = startOfDay(parseISO(date));
-  return isAfter(currentDate, dueDate);
-}
-
-function determineNewClientStatus(status, updatedDate) {
-  if (
-    status === "Paga" ||
-    (status === "Pendente" && !isDateInPast(updatedDate))
-  ) {
-    return "Em Dia";
-  } else {
-    return "Inadimplente";
-  }
-}
+const {
+  dateValidator,
+  updateClientStatus,
+} = require("../../utils/updateClientStatus");
 
 async function updateCharge(req, res) {
   const { id } = req.user;
@@ -31,11 +17,11 @@ async function updateCharge(req, res) {
       return res.status(404).json({ mensagem: "Cliente não encontrado" });
     }
 
-    const locateChargebyID = await knex("cobrancas")
+    const locateChargeById = await knex("cobrancas")
       .where({ id_cob, cliente_id })
       .first();
 
-    if (!locateChargebyID) {
+    if (!locateChargeById) {
       return res.status(400).json({ mensagem: "Cobrança não encontrada" });
     }
 
@@ -43,13 +29,13 @@ async function updateCharge(req, res) {
       return res.status(400).json({ mensagem: "Status de cobrança inválido" });
     }
 
-    const newClientStatus = determineNewClientStatus(status, data_venc);
+    const newClientStatus = updateClientStatus(status, data_venc);
 
     await knex("clientes")
       .where({ id: cliente_id })
       .update({ status: newClientStatus });
 
-    if (status === "Pendente" && isDateInPast(data_venc)) {
+    if (status === "Pendente" && dateValidator(data_venc)) {
       status = "Vencida";
     }
 
